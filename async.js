@@ -10,6 +10,9 @@ const getDataFromFacebook = () =>
     })
 
 const middleware3 = async (req, res, next) => {
+    // Be sure to use this try-catch-next pattern for async error handling (or use Koa instead of Express)
+    // https://stackoverflow.com/questions/51391080/handling-errors-in-express-async-middleware
+
     try {
         const data = await getDataFromFacebook()
 

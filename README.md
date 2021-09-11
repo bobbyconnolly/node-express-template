@@ -9,6 +9,7 @@
 ## What to try?
 
 1. http://localhost:3000/
+   (trying removing next() from one of the middlewares and see what happens)
 
 2. http://localhost:3000/user/0
    (this one is broken, fix it!!)

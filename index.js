@@ -1,5 +1,4 @@
 const express = require("express")
-const { middleware3 } = require("./async")
 
 const app = express()
 
@@ -9,7 +8,7 @@ const app = express()
 
 // Functions that don't close the stream are called "middleware"
 
-// Be sure to call next() once (and only once) to move onto the next middleware
+// Be sure to call next() once and only once to move onto the next middleware
 // Failing to do so will cause the client to hang
 const middleware1 = (req, res, next) => {
     res.locals.m1 = "hi from m1"
@@ -23,6 +22,7 @@ const middleware2 = (req, res, next) => {
 
 // Multiple middleware can be applied (in order) by using an array
 app.get("/", [middleware1, middleware2], (req, res) => {
+    // You can access the data that the middlewares processed inside res.locals
     res.json(res.locals)
 })
 
@@ -53,7 +53,7 @@ const usersMiddleware = (req, res, next) => {
 
 const userRouter = express.Router()
 
-// Let's put all the paths with "/user/:userId" behind usersMiddleware
+// Let's put all the paths with "/user/:userId" behind userMiddleware
 app.use("/user/:userId", usersMiddleware, userRouter)
 
 userRouter.get("/", (req, res) => {
@@ -70,6 +70,10 @@ userRouter.get("/food", (req, res) => {
 /////////////////////////////////////////////////////////////////////
 
 // This is an async example (see async.js)... it fails every 1/10 times
+
+const { middleware3 } = require("./async")
+
+// It's just a single middleware so no need to put it in an array as in Example 1
 app.get("/async", middleware3, (req, res) => {
     res.send(res.locals.data)
 })
@@ -83,7 +87,9 @@ app.get("/async", middleware3, (req, res) => {
 // A simple error logging middleware
 app.use((err, req, res, next) => {
     console.error(`ERROR ${err}`)
-    next(err) // forward to next middleware
+
+    // Forward the error to next middleware
+    next(err)
 })
 
 // Default error handler
