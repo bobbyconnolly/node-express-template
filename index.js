@@ -6,7 +6,11 @@ const app = express()
 /////////////////////////// EXAMPLE 1 ///////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
-// Functions that don't close the stream are called "middleware"
+// According to the Express docs, middleware can:
+// - Execute any code
+// - Make changes to the request and the response objects
+// - End the request-response cycle
+// - Call the next middleware function in the stack
 
 // Be sure to call next() once and only once to move onto the next middleware
 // Failing to do so will cause the client to hang
